@@ -1,7 +1,17 @@
-package token
+package nd.rw.token
 
 data class Token(val type: TokenType, val literal: String) {
     constructor(type: TokenType, char: Char) : this(type, char.toString())
+
+    companion object {
+
+        private val keywords = mapOf("fn" to TokenType.FUNCTION, "let" to TokenType.LET)
+
+        fun lookUpIdent(ident: String): TokenType? {
+            return keywords[ident]
+        }
+    }
+
 }
 
 

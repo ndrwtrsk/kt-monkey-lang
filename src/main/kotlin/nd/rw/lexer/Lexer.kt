@@ -1,7 +1,8 @@
 package nd.rw.lexer
 
-import token.Token
-import token.TokenType.*
+import nd.rw.extensions.isLetterOrUnderScore
+import nd.rw.token.Token
+import nd.rw.token.TokenType.*
 
 class Lexer(private val input: String) {
 
@@ -19,7 +20,8 @@ class Lexer(private val input: String) {
 
 
     fun nextToken(): Token {
-        val token = when(currentChar) {
+        eatWhitespace()
+        val token = when (currentChar) {
             '=' -> Token(ASSIGN, currentChar)
             ';' -> Token(SEMICOLON, currentChar)
             '(' -> Token(LPAREN, currentChar)
@@ -28,12 +30,45 @@ class Lexer(private val input: String) {
             '}' -> Token(RBRACE, currentChar)
             ',' -> Token(COMMA, currentChar)
             '+' -> Token(PLUS, currentChar)
-            else -> Token(EOF, "")
+            0.toChar() -> Token(EOF, "")
+            else -> {
+                return when {
+                    currentChar.isLetterOrUnderScore() -> {
+                        val literal: String = readIdentifier()
+                        val type = Token.lookUpIdent(literal) ?: IDENT
+                        Token(type, literal)
+                    }
+                    currentChar.isDigit() -> {
+                        Token(INT, readNumber())
+                    }
+                    else -> Token(ILLEGAL, "")
+                }
+            }
         }
         readChar()
         return token
     }
 
+    private fun readNumber(): String {
+        val startPosition = this.position
+        while(currentChar.isDigit()) {
+            readChar()        }
+        return input.substring(startPosition, this.position)
+    }
+
+    private fun readIdentifier(): String {
+        val startingPosition = this.position
+        while (currentChar.isLetterOrUnderScore()) {
+            readChar()
+        }
+        return input.substring(startingPosition, this.position)
+    }
+
+    private fun eatWhitespace() {
+        while (currentChar.isWhitespace()) {
+            readChar()
+        }
+    }
 
     // TODO support for UNICODE?
     private fun readChar() {
