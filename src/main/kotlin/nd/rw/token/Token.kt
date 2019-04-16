@@ -26,6 +26,13 @@ enum class TokenType(val value: String) {
     // Operators
     ASSIGN("="),
     PLUS("+"),
+    MINUS("-"),
+    BANG("!"),
+    ASTERISK("*"),
+    SLASH("/"),
+
+    LT("<"),
+    GT(">"),
 
     // Delimiters
     COMMA(","),

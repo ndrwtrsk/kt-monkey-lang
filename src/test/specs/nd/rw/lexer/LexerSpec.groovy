@@ -34,8 +34,10 @@ class LexerSpec extends Specification {
                     };
 
                     let result = add(five, ten);
+                    !-/*5;
+                    5 < 10 > 5;
+                    """,
 
-                    """
 
             ]
             expectedTokens << [
@@ -86,6 +88,18 @@ class LexerSpec extends Specification {
                             new Token(COMMA, ","),
                             new Token(IDENT, "ten"),
                             new Token(RPAREN, ")"),
+                            new Token(SEMICOLON, ";"),
+                            new Token(BANG, "!"),
+                            new Token(MINUS, "-"),
+                            new Token(SLASH, "/"),
+                            new Token(ASTERISK, "*"),
+                            new Token(INT, "5"),
+                            new Token(SEMICOLON, ";"),
+                            new Token(INT, "5"),
+                            new Token(LT, "<"),
+                            new Token(INT, "10"),
+                            new Token(GT, ">"),
+                            new Token(INT, "5"),
                             new Token(SEMICOLON, ";"),
                             new Token(EOF, ""),
                     ]

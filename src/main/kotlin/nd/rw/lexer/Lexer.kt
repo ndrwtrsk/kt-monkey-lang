@@ -30,7 +30,13 @@ class Lexer(private val input: String) {
             '}' -> Token(RBRACE, currentChar)
             ',' -> Token(COMMA, currentChar)
             '+' -> Token(PLUS, currentChar)
-            0.toChar() -> Token(EOF, "")
+            '-' -> Token(MINUS, currentChar)
+            '*' -> Token(ASTERISK, currentChar)
+            '/' -> Token(SLASH, currentChar)
+            '<' -> Token(LT, currentChar)
+            '>' -> Token(GT, currentChar)
+            '!' -> Token(BANG, currentChar)
+            NULL -> Token(EOF, "")
             else -> {
                 return when {
                     currentChar.isLetterOrUnderScore() -> {
