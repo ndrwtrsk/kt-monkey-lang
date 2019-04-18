@@ -37,6 +37,14 @@ class LexerSpec extends Specification {
                     !-/*5;
                     5 < 10 > 5;
                     """,
+                    """
+                    if (5 < 10) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                    
+                    """
 
 
             ]
@@ -102,6 +110,25 @@ class LexerSpec extends Specification {
                             new Token(INT, "5"),
                             new Token(SEMICOLON, ";"),
                             new Token(EOF, ""),
+                    ],
+                    [
+                            new Token(IF, "if"),
+                            new Token(LPAREN, "("),
+                            new Token(INT, "5"),
+                            new Token(LT, "<"),
+                            new Token(INT, "10"),
+                            new Token(RPAREN, ")"),
+                            new Token(LBRACE, "{"),
+                            new Token(RETURN, "return"),
+                            new Token(TRUE, "true"),
+                            new Token(SEMICOLON, ";"),
+                            new Token(RBRACE, "}"),
+                            new Token(ELSE, "else"),
+                            new Token(LBRACE, "{"),
+                            new Token(RETURN, "return"),
+                            new Token(FALSE, "false"),
+                            new Token(SEMICOLON, ";"),
+                            new Token(RBRACE, "}"),
                     ]
 
             ]

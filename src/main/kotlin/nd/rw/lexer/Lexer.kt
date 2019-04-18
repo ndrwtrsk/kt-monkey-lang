@@ -57,8 +57,9 @@ class Lexer(private val input: String) {
 
     private fun readNumber(): String {
         val startPosition = this.position
-        while(currentChar.isDigit()) {
-            readChar()        }
+        while(currentChar.isDigit()){
+            readChar()
+        }
         return input.substring(startPosition, this.position)
     }
 

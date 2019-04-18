@@ -1,17 +1,24 @@
 package nd.rw.token
 
+import nd.rw.token.TokenType.*
+
 data class Token(val type: TokenType, val literal: String) {
     constructor(type: TokenType, char: Char) : this(type, char.toString())
 
     companion object {
-
-        private val keywords = mapOf("fn" to TokenType.FUNCTION, "let" to TokenType.LET)
+        private val keywords = mapOf(
+                "fn" to FUNCTION,
+                "let" to LET,
+                "true" to TRUE,
+                "false" to FALSE,
+                "if" to IF,
+                "else" to ELSE,
+                "return" to RETURN)
 
         fun lookUpIdent(ident: String): TokenType? {
             return keywords[ident]
         }
     }
-
 }
 
 
@@ -45,6 +52,11 @@ enum class TokenType(val value: String) {
 
     // Keywords
     FUNCTION("FUNCTION"),
-    LET("LET")
+    LET("LET"),
+    TRUE("TRUE"),
+    FALSE("FALSE"),
+    IF("IF"),
+    ELSE("ELSE"),
+    RETURN("RETURN")
 
 }
