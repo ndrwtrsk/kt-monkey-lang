@@ -18,19 +18,10 @@ class Lexer(private val input: String) {
     private var readPosition = 0
     private var currentChar = NULL
 
-
     fun nextToken(): Token {
         eatWhitespace()
         val token = when (currentChar) {
-            '=' -> {
-                if (peekChar() == '=') {
-                    val ch = currentChar
-                    readChar()
-                    Token(EQ, "$ch$currentChar")
-                } else {
-                    Token(ASSIGN, currentChar)
-                }
-            }
+            '=' -> extractAssignOrEq()
             ';' -> Token(SEMICOLON, currentChar)
             '(' -> Token(LPAREN, currentChar)
             ')' -> Token(RPAREN, currentChar)
@@ -43,32 +34,47 @@ class Lexer(private val input: String) {
             '/' -> Token(SLASH, currentChar)
             '<' -> Token(LT, currentChar)
             '>' -> Token(GT, currentChar)
-            '!' -> {
-                if (peekChar() == '=') {
-                    val ch = currentChar
-                    readChar()
-                    Token(NOT_EQ, "$ch$currentChar")
-                } else {
-                    Token(BANG, currentChar)
-                }
-            }
+            '!' -> extractBangOrNotEq()
             NULL -> Token(EOF, "")
-            else -> {
-                return when {
-                    currentChar.isLetterOrUnderScore() -> {
-                        val literal: String = readIdentifier()
-                        val type = Token.lookUpIdent(literal) ?: IDENT
-                        Token(type, literal)
-                    }
-                    currentChar.isDigit() -> {
-                        Token(INT, readNumber())
-                    }
-                    else -> Token(ILLEGAL, "")
-                }
-            }
+            else -> return extractMultiCharToken() // TODO magic GOTO jump... skips readChar() and return token and immediately quits
+
         }
         readChar()
         return token
+    }
+
+    private fun extractAssignOrEq(): Token {
+        return if (peekChar() == '=') {
+            val ch = currentChar
+            readChar()
+            Token(EQ, "$ch$currentChar")
+        } else {
+            Token(ASSIGN, currentChar)
+        }
+    }
+
+    private fun extractBangOrNotEq(): Token {
+        return if (peekChar() == '=') {
+            val ch = currentChar
+            readChar()
+            Token(NOT_EQ, "$ch$currentChar")
+        } else {
+            Token(BANG, currentChar)
+        }
+    }
+
+    private fun extractMultiCharToken(): Token {
+        return when {
+            currentChar.isLetterOrUnderScore() -> {
+                val literal: String = readIdentifier()
+                val type = Token.lookUpIdent(literal) ?: IDENT
+                Token(type, literal)
+            }
+            currentChar.isDigit() -> {
+                Token(INT, readNumber())
+            }
+            else -> Token(ILLEGAL, "")
+        }
     }
 
     private fun readNumber(): String {
