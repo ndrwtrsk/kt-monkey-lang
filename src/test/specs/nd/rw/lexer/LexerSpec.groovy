@@ -44,6 +44,10 @@ class LexerSpec extends Specification {
                         return false;
                     }
                     
+                    """,
+                    """
+                    10 == 10;
+                    10 != 9;
                     """
 
 
@@ -129,6 +133,16 @@ class LexerSpec extends Specification {
                             new Token(FALSE, "false"),
                             new Token(SEMICOLON, ";"),
                             new Token(RBRACE, "}"),
+                    ],
+                    [
+                            new Token(INT, "10"),
+                            new Token(EQ, "=="),
+                            new Token(INT, "10"),
+                            new Token(SEMICOLON, ";"),
+                            new Token(INT, "10"),
+                            new Token(NOT_EQ, "!="),
+                            new Token(INT, "9"),
+                            new Token(SEMICOLON, ";"),
                     ]
 
             ]

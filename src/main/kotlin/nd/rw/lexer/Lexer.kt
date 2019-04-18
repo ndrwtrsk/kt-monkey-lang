@@ -22,7 +22,15 @@ class Lexer(private val input: String) {
     fun nextToken(): Token {
         eatWhitespace()
         val token = when (currentChar) {
-            '=' -> Token(ASSIGN, currentChar)
+            '=' -> {
+                if (peekChar() == '=') {
+                    val ch = currentChar
+                    readChar()
+                    Token(EQ, "$ch$currentChar")
+                } else {
+                    Token(ASSIGN, currentChar)
+                }
+            }
             ';' -> Token(SEMICOLON, currentChar)
             '(' -> Token(LPAREN, currentChar)
             ')' -> Token(RPAREN, currentChar)
@@ -35,7 +43,15 @@ class Lexer(private val input: String) {
             '/' -> Token(SLASH, currentChar)
             '<' -> Token(LT, currentChar)
             '>' -> Token(GT, currentChar)
-            '!' -> Token(BANG, currentChar)
+            '!' -> {
+                if (peekChar() == '=') {
+                    val ch = currentChar
+                    readChar()
+                    Token(NOT_EQ, "$ch$currentChar")
+                } else {
+                    Token(BANG, currentChar)
+                }
+            }
             NULL -> Token(EOF, "")
             else -> {
                 return when {
@@ -86,6 +102,14 @@ class Lexer(private val input: String) {
         }
         position = readPosition
         readPosition++
+    }
+
+    private fun peekChar(): Char {
+        return if (readPosition >= input.length) {
+            NULL
+        } else {
+            input[readPosition]
+        }
     }
 
 }
