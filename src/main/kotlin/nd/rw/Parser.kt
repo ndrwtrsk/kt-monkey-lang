@@ -11,7 +11,7 @@ class Parser(private val lexer: Lexer) {
     private var curToken: Token = Token(EOF, 0.toChar())
     private var peekToken: Token = Token(EOF, 0.toChar())
     private val errors = mutableListOf<String>()
-    get
+        get
 
     init {
         nextToken()
@@ -34,6 +34,7 @@ class Parser(private val lexer: Lexer) {
     private fun parseStatement(): Statement? {
         return when (curToken.type) {
             LET -> parseLetStatement()
+            RETURN -> parseReturnStatement()
             else -> null
         }
     }
@@ -55,7 +56,19 @@ class Parser(private val lexer: Lexer) {
             nextToken()
         }
 
-        return LetStatement(name)
+        return LetStatement(name = name)
+    }
+
+    private fun parseReturnStatement(): Statement? {
+        nextToken()
+
+        // TODO: We're skipping the expressions until we
+        // encounter a semicolon
+        while (!currentTokenIs(SEMICOLON)) {
+            nextToken()
+        }
+
+        return ReturnStatement(expression = null)
     }
 
     private fun nextToken() {
@@ -73,11 +86,11 @@ class Parser(private val lexer: Lexer) {
         }
     }
 
-    private fun peekTokenIs(expected: TokenType) : Boolean {
+    private fun peekTokenIs(expected: TokenType): Boolean {
         return peekToken.type == expected
     }
 
-    private fun currentTokenIs(expected: TokenType) : Boolean {
+    private fun currentTokenIs(expected: TokenType): Boolean {
         return curToken.type == expected
     }
 
