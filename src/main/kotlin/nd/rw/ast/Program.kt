@@ -8,4 +8,10 @@ class Program : Node {
         return statements.firstOrNull()?.tokenLiteral() ?: ""
     }
 
+    override fun toString(): String {
+        val builder = StringBuilder()
+        statements.forEach { node -> builder.append("$node\n") }
+        return "Program(statements=$builder)"
+    }
+
 }

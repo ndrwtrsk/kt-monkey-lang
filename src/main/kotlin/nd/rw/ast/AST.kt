@@ -2,6 +2,7 @@ package nd.rw.ast
 
 interface Node {
     fun tokenLiteral(): String
+
 }
 
 interface Statement : Node {

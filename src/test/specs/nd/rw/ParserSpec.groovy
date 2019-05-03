@@ -21,7 +21,7 @@ class ParserSpec extends Specification {
         then:
             program
             program.statements.size() == 1
-            program.statements[0] instanceof LetStatement
+
             with((LetStatement) program.statements[0]) {
                 token == new Token(TokenType.LET, 'let')
                 name.value == 'five'

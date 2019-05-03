@@ -12,4 +12,8 @@ class ReturnStatement(private val expression: Expression?,
     override fun statementNode() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun toString(): String {
+        return "${tokenLiteral()} $expression;"
+    }
 }

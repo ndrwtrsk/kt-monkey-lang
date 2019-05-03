@@ -16,4 +16,9 @@ class LetStatement(val name: Identifier,
         return token.literal
     }
 
+    override fun toString(): String {
+        return "${tokenLiteral()} $name = $value;"
+    }
+
+
 }
